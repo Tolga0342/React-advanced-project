@@ -85,7 +85,7 @@ export const EventsPage = () => {
         {searchField.map((event) => (
           <Box key={event.id} padding={2}>
             {/* link to /event/:eventId */}
-            <Link to={"event/${event.id}"}>
+            <Link to={`/event/${event.id}`}>
               <Text> {event.title}</Text>
               <Text> {event.description} </Text>
               <Image

@@ -2,6 +2,8 @@ import React from "react";
 import { Heading, Text, Image } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
+import { EditEvent } from "../components/EditEvent";
+import { DeleteButton } from "../components/DeleteEvent";
 
 // data ingeladen
 export const loader = async ({ params }) => {
@@ -17,6 +19,7 @@ export const loader = async ({ params }) => {
 
 export const EventPage = () => {
   const { event, users, categories } = useLoaderData();
+  console.log("event:", event);
   const [selectedEvent, setSelectedEvent] = useState(event);
 
   // met deze functie weergeef je de categories.name
@@ -57,6 +60,14 @@ export const EventPage = () => {
         mb={1}
       />
       <Text>{user.name}</Text>
+
+      <EditEvent
+        categories={categories}
+        event={selectedEvent}
+        users={users}
+        setSelectEvent={setSelectedEvent}
+      />
+      <DeleteButton event={selectedEvent} />
     </>
   );
 };

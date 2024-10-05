@@ -21,7 +21,7 @@ import React from "react";
 import { useState } from "react";
 import { Form } from "react-router-dom";
 
-export const EditEvent = ({ event, users, categories, setSelectEvent }) => {
+export const EditEvent = ({ event, users, categories }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const initialRef = React.useRef(null);
@@ -38,11 +38,11 @@ export const EditEvent = ({ event, users, categories, setSelectEvent }) => {
   const [endTime, setEndTime] = useState(event.endTime);
   console.log("event2:", event);
 
-  const EditEvent = async (event) => {
-    console.log("event1:", event);
+  const EditEvent = async (item) => {
+    console.log("event1:", item);
     const response = await fetch(`http://localhost:3000/events/${event.id}`, {
       method: "PUT",
-      body: JSON.stringify(event),
+      body: JSON.stringify(item),
       headers: { "Content-Type": "application/json" },
     });
     if (response.ok) {

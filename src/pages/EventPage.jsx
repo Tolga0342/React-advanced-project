@@ -21,6 +21,7 @@ export const EventPage = () => {
   const { event, users, categories } = useLoaderData();
   console.log("event:", event);
   const [selectedEvent, setSelectedEvent] = useState(event);
+  console.log("selectedEvent:", selectedEvent);
 
   // met deze functie weergeef je de categories.name
   const categoryNames = (categoryId) => {

@@ -1,16 +1,28 @@
-import React from "react";
-import { Heading } from "@chakra-ui/react";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
+  Heading,
+  Text,
   FormControl,
   FormLabel,
+  Center,
   Checkbox,
+  Button,
   Select,
+  Input,
+  Flex,
   useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
-// inladen van de data.
+// Load user and category data
 export const loader = async () => {
   const responseUsers = await fetch("http://localhost:3000/users");
   const responseCategories = await fetch("http://localhost:3000/categories");
@@ -22,51 +34,76 @@ export const loader = async () => {
 export const AddEvent = () => {
   const { users, categories } = useLoaderData();
   const toast = useToast();
+  const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure(); // Modal control
 
-  // voor elk property een useState() aangemaakt.
-  const [createdBy, setCreatedBy] = useState(2);
-  const [title, setTitle] = useState("hallo");
-  const [description, setDescription] = useState("hoi");
-  const [image, setImage] = useState(
-    "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg"
-  );
+  // State for form inputs
+  const [createdBy, setCreatedBy] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
   const [categoryIds, setCategoryIds] = useState([]);
-  const [location, setLocation] = useState("amsterdam");
-  const [startTime, setStartTime] = useState("2023-03-15T12:00:00.000Z");
-  const [endTime, setEndTime] = useState("2023-03-15T13:30:00.000Z");
+  const [location, setLocation] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
 
-  // nieuwe data insturen naar de events.json
-  const createEvent = async (event) => {
-    // console.log(JSON.stringify(event));
-    const response = await fetch("http://localhost:3000/events", {
-      method: "POST",
-      body: JSON.stringify(event),
-      headers: { "Content-Type": "application/json" },
-    });
-    if (response.ok) {
-      toast({
-        title: "New event created.",
-        description: "We have created the new event.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-    } else {
-      toast({
-        title: "New event not created.",
-        description: "We were not able to create the new event.",
-        status: "false",
-        duration: 3000,
-        isClosable: true,
-      });
+  // State for error messages
+  const [errors, setErrors] = useState({});
+
+  // Validation function
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!createdBy) {
+      newErrors.createdBy = "User is required";
     }
-    const addingEvent = await response.json();
-    console.log("addingEvent", addingEvent);
+    if (!title) {
+      newErrors.title = "Event title is required";
+    }
+    if (!description) {
+      newErrors.description = "Description is required";
+    }
+    if (!location) {
+      newErrors.location = "Location is required";
+    }
+    if (!image || !/^(ftp|http|https):\/\/[^ "]+$/.test(image)) {
+      newErrors.image = "Valid Image URL is required";
+    }
+    if (!startTime) {
+      newErrors.startTime = "Start time is required";
+    }
+    if (!endTime) {
+      newErrors.endTime = "End time is required";
+    }
+    if (new Date(startTime) >= new Date(endTime)) {
+      newErrors.endTime = "End time must be after start time";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  //handlesubmit voor Form (leeghalen van de form na insturing nieuwe data).
+  // Submit handler
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Validate the form
+    if (!validateForm()) {
+      toast({
+        title: "Validation error.",
+        description: "Please fill in all required fields correctly.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    onOpen(); // Open the confirmation modal
+  };
+
+  // Function to create the event after confirmation
+  const confirmSubmit = async () => {
     const newEvent = {
       createdBy,
       title,
@@ -77,119 +114,202 @@ export const AddEvent = () => {
       startTime,
       endTime,
     };
-    console.log("newEvent:", newEvent);
-    createEvent(newEvent);
-    setCreatedBy("");
-    setTitle("");
-    setDescription("");
-    setImage("");
-    setCategoryIds([]);
-    setLocation("");
-    setStartTime("");
-    setEndTime("");
+
+    const response = await fetch("http://localhost:3000/events", {
+      method: "POST",
+      body: JSON.stringify(newEvent),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (response.ok) {
+      const addingEvent = await response.json();
+      toast({
+        title: "New event created.",
+        description: "Redirecting to the event page.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      // Redirect to the event page after 3 seconds
+      setTimeout(() => {
+        navigate(`/event/${addingEvent.id}`);
+      }, 3000);
+    } else {
+      toast({
+        title: "Failed to create event.",
+        description: "Something went wrong. Please try again.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    onClose(); // Close the modal after submission
   };
 
-  //handleCategoryChange voor checkbox
+  // Handle category change for checkboxes
   const handleCategoryChange = (e) => {
-    setCategoryIds((current) => current.filter((id) => id != e.target.value));
-    const addCategory = () => {
-      if (e.target.checked) {
-        setCategoryIds([...categoryIds, Number(e.target.value)]);
-      } else if (!e.target.checked) {
-        setCategoryIds((current) =>
-          current.filter((id) => id != e.target.value)
-        );
-      } else return;
-    };
-    addCategory();
+    setCategoryIds((current) =>
+      current.includes(Number(e.target.value))
+        ? current.filter((id) => id !== Number(e.target.value))
+        : [...current, Number(e.target.value)]
+    );
   };
 
   return (
     <>
-      <Heading> Add-event</Heading>
+      <Heading color="gold" size="2xl" mt={6} mb={4} textAlign="center">
+        Add your event
+      </Heading>
 
       <form onSubmit={handleSubmit}>
-        <FormControl>
-          <FormLabel htmlFor="user">User:</FormLabel>
-          <Select
-            placeholder="Choose an user"
-            id="user"
-            bg="gray.50"
-            onChange={(e) => setCreatedBy(Number(e.target.value))}
+        <Center>
+          <Flex
+            bg="black"
+            padding={5}
+            border="1px solid black"
+            m={5}
+            flexDir="column"
+            align="center"
+            justify="center"
+            gap={2}
+            w="50vw"
           >
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
+            <FormControl isRequired isInvalid={errors.createdBy}>
+              <FormLabel color="gold">User:</FormLabel>
+              <Select
+                placeholder="Choose a user"
+                bg="gray.200"
+                onChange={(e) => setCreatedBy(Number(e.target.value))}
+              >
+                {users.map((user) => (
+                  <option key={user.id} value={user.id}>
+                    {user.name}
+                  </option>
+                ))}
+              </Select>
+              {errors.createdBy && (
+                <Text color="red.500">{errors.createdBy}</Text>
+              )}
+            </FormControl>
 
-        <input
-          onChange={(e) => setTitle(e.target.value)}
-          type="text"
-          required="required"
-          placeholder="Title"
-          value={title}
-        />
+            <FormControl isRequired isInvalid={errors.title}>
+              <FormLabel color="gold">Event Name:</FormLabel>
+              <Input
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Title"
+                value={title}
+                bg="gray.200"
+              />
+              {errors.title && <Text color="red.500">{errors.title}</Text>}
+            </FormControl>
 
-        <input
-          onChange={(e) => setDescription(e.target.value)}
-          type="text"
-          required="required"
-          placeholder="Description"
-          value={description}
-        />
+            <FormControl isRequired isInvalid={errors.description}>
+              <FormLabel color="gold">Description:</FormLabel>
+              <Input
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Description"
+                value={description}
+                bg="gray.200"
+              />
+              {errors.description && (
+                <Text color="red.500">{errors.description}</Text>
+              )}
+            </FormControl>
 
-        <input
-          onChange={(e) => setImage(e.target.value)}
-          type="url"
-          required="required"
-          placeholder="Image"
-          value={image}
-        />
+            <FormControl isRequired isInvalid={errors.image}>
+              <FormLabel color="gold">Image URL:</FormLabel>
+              <Input
+                onChange={(e) => setImage(e.target.value)}
+                placeholder="Image URL"
+                value={image}
+                bg="gray.200"
+              />
+              {errors.image && <Text color="red.500">{errors.image}</Text>}
+            </FormControl>
 
-        <input
-          onChange={(e) => setLocation(e.target.value)}
-          type="text"
-          required="required"
-          placeholder="location"
-          value={location}
-        />
+            <FormControl isRequired isInvalid={errors.location}>
+              <FormLabel color="gold">Location:</FormLabel>
+              <Input
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Location"
+                value={location}
+                bg="gray.200"
+              />
+              {errors.location && (
+                <Text color="red.500">{errors.location}</Text>
+              )}
+            </FormControl>
 
-        <input
-          onChange={(e) => setStartTime(e.target.value)}
-          type="datetime"
-          required="required"
-          placeholder="Start-time"
-          value={startTime}
-        />
+            <FormControl isRequired isInvalid={errors.startTime}>
+              <FormLabel color="gold">Start Time:</FormLabel>
+              <Input
+                onChange={(e) => setStartTime(e.target.value)}
+                placeholder="Start Time"
+                type="datetime-local"
+                value={startTime}
+                bg="gray.200"
+              />
+              {errors.startTime && (
+                <Text color="red.500">{errors.startTime}</Text>
+              )}
+            </FormControl>
 
-        <input
-          onChange={(e) => setEndTime(e.target.value)}
-          type="datetime"
-          required="required"
-          placeholder="End-time"
-          value={endTime}
-        />
+            <FormControl isRequired isInvalid={errors.endTime}>
+              <FormLabel color="gold">End Time:</FormLabel>
+              <Input
+                onChange={(e) => setEndTime(e.target.value)}
+                placeholder="End Time"
+                type="datetime-local"
+                value={endTime}
+                bg="gray.200"
+              />
+              {errors.endTime && <Text color="red.500">{errors.endTime}</Text>}
+            </FormControl>
 
-        <FormControl>
-          <FormLabel htmlFor="categoryIds">Categories: </FormLabel>
-          {categories.map((cat) => (
-            <Checkbox
-              key={cat.id}
-              id={cat.name}
-              name="category"
-              value={cat.id}
-              onChange={(e) => handleCategoryChange(e)}
-            >
-              {cat.name}
-            </Checkbox>
-          ))}
-        </FormControl>
+            <FormControl>
+              <FormLabel color="gold">Categories:</FormLabel>
+              {categories.map((cat) => (
+                <Checkbox
+                  key={cat.id}
+                  value={cat.id}
+                  onChange={handleCategoryChange}
+                  isChecked={categoryIds.includes(cat.id)}
+                  color="gold"
+                >
+                  {cat.name}
+                </Checkbox>
+              ))}
+            </FormControl>
 
-        <button type="submit"> Submit </button>
+            <Center>
+              <Button bg="gold" type="submit" w="15vw" h="7vh">
+                <Text color="black">Submit</Text>
+              </Button>
+            </Center>
+          </Flex>
+        </Center>
       </form>
+
+      {/* Modal for confirmation */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm Event Submission</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>Are you sure you want to submit this event?</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="green" mr={3} onClick={confirmSubmit}>
+              Confirm
+            </Button>
+            <Button variant="ghost" onClick={onClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

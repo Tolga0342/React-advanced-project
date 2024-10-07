@@ -48,7 +48,7 @@ export const EditEvent = ({ event, users, categories }) => {
     if (response.ok) {
       toast({
         title: "Current event edited.",
-        description: "We have edit the current event.",
+        description: "Your edits have been succesfully applied.",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -117,7 +117,7 @@ export const EditEvent = ({ event, users, categories }) => {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <Form onSubmit={handleSubmit}>
-              <FormControl isRequired>
+              <FormControl>
                 <FormLabel htmlFor="user">User:</FormLabel>
                 <Select
                   placeholder="Choose an user"
@@ -133,7 +133,7 @@ export const EditEvent = ({ event, users, categories }) => {
                 </Select>
               </FormControl>
 
-              <FormControl isRequired>
+              <FormControl>
                 <FormLabel>Title</FormLabel>
                 <Input
                   onChange={(e) => setTitle(e.target.value)}
@@ -143,7 +143,7 @@ export const EditEvent = ({ event, users, categories }) => {
                 />
               </FormControl>
 
-              <FormControl isRequired>
+              <FormControl>
                 <FormLabel>Description</FormLabel>
                 <Textarea
                   name="description"
@@ -152,7 +152,7 @@ export const EditEvent = ({ event, users, categories }) => {
                 />
               </FormControl>
 
-              <FormControl isRequired>
+              <FormControl>
                 <FormLabel>Image</FormLabel>
                 <Input
                   onChange={(e) => setImage(e.target.value)}
@@ -162,7 +162,7 @@ export const EditEvent = ({ event, users, categories }) => {
                 />
               </FormControl>
 
-              <FormControl isRequired>
+              <FormControl>
                 <FormLabel>Location</FormLabel>
                 <Input
                   type="text"
@@ -172,7 +172,7 @@ export const EditEvent = ({ event, users, categories }) => {
                 />
               </FormControl>
 
-              <FormControl isRequired>
+              <FormControl>
                 <FormLabel>Start-time</FormLabel>
                 <Input
                   onChange={(e) => setStartTime(e.target.value)}
@@ -182,7 +182,7 @@ export const EditEvent = ({ event, users, categories }) => {
                 />
               </FormControl>
 
-              <FormControl isRequired>
+              <FormControl>
                 <FormLabel>End-time</FormLabel>
                 <Input
                   onChange={(e) => setEndTime(e.target.value)}

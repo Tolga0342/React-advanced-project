@@ -6,6 +6,7 @@ import { EventsPage, loader as postListLoader } from "./pages/EventsPage";
 import { AddEvent, loader as addLoader } from "./pages/AddEvent";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Root } from "./components/Root";
+import { Theme } from "./components/Theme";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
 // @ts-ignore
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={Theme}>
       <RouterProvider router={router} />
     </ChakraProvider>
   </React.StrictMode>

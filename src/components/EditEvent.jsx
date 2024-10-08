@@ -19,7 +19,7 @@ import {
 import React from "react";
 
 import { useState } from "react";
-import { Form } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 
 export const EditEvent = ({ event, users, categories }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -27,6 +27,8 @@ export const EditEvent = ({ event, users, categories }) => {
   const initialRef = React.useRef(null);
 
   const toast = useToast();
+
+  const navigate = useNavigate();
 
   const [createdBy, setCreatedBy] = useState(event.createdBy);
   const [title, setTitle] = useState(event.title);
@@ -53,6 +55,9 @@ export const EditEvent = ({ event, users, categories }) => {
         duration: 3000,
         isClosable: true,
       });
+      setTimeout(() => {
+        navigate(`/`);
+      }, 3000);
     } else {
       toast({
         title: "Failed to edit current event.",

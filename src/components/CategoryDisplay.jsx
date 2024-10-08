@@ -5,8 +5,8 @@ import { FormControl, FormLabel, Select } from "@chakra-ui/react";
 export const CategoryDisplay = () => {
   const { categories, handleCategoryChange } = useContext(eventContext);
   return (
-    <FormControl w="20vw">
-      <FormLabel fontSize="xl" color="gold" fontWeight="bold">
+    <FormControl w={["50vw", "20vw"]}>
+      <FormLabel fontSize={["md", "xl"]} color="gold" fontWeight={["bold"]}>
         Choose your category:
       </FormLabel>
       <Select

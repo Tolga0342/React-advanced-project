@@ -92,27 +92,41 @@ export const EventsPage = () => {
     // "Context" toegevoegd zodat gebruik van prop rechtstreeks kan.
     <eventContext.Provider value={{ categories, events, handleCategoryChange }}>
       <Box>
-        <Heading color="gold" size="2xl" mt={6} mb={4} textAlign="center">
+        <Heading
+          color="gold"
+          size={["sg", "2xl"]}
+          mt={6}
+          mb={4}
+          textAlign="center"
+        >
           Welcome to homepage
         </Heading>
         <Center>
           <Input
             type="text"
-            w="30vw"
+            w={["90vw", "30vw"]}
             onChange={handleChange}
             placeholder="Search events..."
             bg="gray.200"
           />
         </Center>
-        <Flex flexDirection="row" mt={10} mr={20} justifyContent="right">
+        <Flex
+          flexDirection={["column", "row"]}
+          mt={10}
+          mr={20}
+          ml={[35, 0]}
+          justifyContent={["center", "right"]}
+          align={["center"]}
+        >
           <CategoryDisplay />
         </Flex>
 
         <Flex
           mt={10}
-          justify="space-evenly"
+          justify={["center", "space-evenly"]}
+          align={["center"]}
           flexWrap="wrap"
-          flexDir="row"
+          flexDir={["column", "row"]}
           gap={1}
         >
           {searchField.map((event) => (
@@ -124,7 +138,7 @@ export const EventsPage = () => {
               p={5}
               align="center"
               mb={8}
-              w="25vw"
+              w={["85vw", "25vw"]}
               h="75vh"
               bg="black"
             >

@@ -158,7 +158,13 @@ export const AddEvent = () => {
 
   return (
     <>
-      <Heading color="gold" size="2xl" mt={6} mb={4} textAlign="center">
+      <Heading
+        color="gold"
+        size={["lg", "2xl"]}
+        mt={6}
+        mb={[2, 4]}
+        textAlign="center"
+      >
         Add your event
       </Heading>
 
@@ -168,12 +174,12 @@ export const AddEvent = () => {
             bg="black"
             padding={5}
             border="1px solid black"
-            m={5}
+            m={[2, 5]}
             flexDir="column"
             align="center"
             justify="center"
             gap={2}
-            w="50vw"
+            w={["85vw", "50vw"]}
           >
             <FormControl isRequired isInvalid={errors.createdBy}>
               <FormLabel color="gold">User:</FormLabel>
@@ -283,7 +289,7 @@ export const AddEvent = () => {
             </FormControl>
 
             <Center>
-              <Button bg="gold" type="submit" w="15vw" h="7vh">
+              <Button bg="gold" type="submit" w={["50vw", "15vw"]} h="7vh">
                 <Text color="black">Submit</Text>
               </Button>
             </Center>

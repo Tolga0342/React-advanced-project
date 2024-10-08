@@ -37,55 +37,73 @@ export const EventPage = () => {
 
   return (
     <Box>
-      <Heading color="gold" size="2xl" mt={6} mb={10} textAlign="center">
+      <Heading
+        color="white"
+        size={["lg", "2xl"]}
+        mt={6}
+        mb={[5, 10]}
+        textAlign="center"
+      >
         {selectedEvent.title}
       </Heading>
 
-      <SimpleGrid columns={2}>
-        <Box ml={10}>
-          <Text color="gold" fontSize="xl" fontWeight="bold">
+      <SimpleGrid columns={[1, 2]}>
+        <Box>
+          <Image
+            src={selectedEvent.image}
+            alt="Image"
+            h={["60vw", "70vh"]}
+            w={["85vw", "45vw"]}
+            ml={5}
+            mb={[5, 0]}
+            borderTopRadius="xl"
+          />
+        </Box>
+
+        <Box ml={30}>
+          <Text color="white" fontSize="xl" fontWeight="bold">
             Description:
           </Text>
-          <Text color="gold" mb={3} fontSize="xl">
+          <Text color="white" mb={3} fontSize="xl">
             {" "}
             {selectedEvent.description}{" "}
           </Text>
 
-          <Text color="gold" fontSize="xl" fontWeight="bold">
+          <Text color="white" fontSize="xl" fontWeight="bold">
             {" "}
             Location:
           </Text>
-          <Text color="gold" mb={3} fontSize="xl">
+          <Text color="white" mb={3} fontSize="xl">
             {selectedEvent.location}
           </Text>
 
-          <Text color="gold" fontSize="xl" fontWeight="bold">
+          <Text color="white" fontSize="xl" fontWeight="bold">
             {" "}
             Start time:
           </Text>
-          <Text color="gold" mb={3} fontSize="xl">
+          <Text color="white" mb={3} fontSize="xl">
             {" "}
             {selectedEvent.startTime}{" "}
           </Text>
 
-          <Text color="gold" fontSize="xl" fontWeight="bold">
+          <Text color="white" fontSize="xl" fontWeight="bold">
             {" "}
             End time:
           </Text>
-          <Text color="gold" mb={3} fontSize="xl">
+          <Text color="white" mb={3} fontSize="xl">
             {" "}
             {selectedEvent.endTime}{" "}
           </Text>
 
-          <Text color="gold" fontSize="xl" fontWeight="bold">
+          <Text color="white" fontSize="xl" fontWeight="bold">
             {" "}
             Categories:
           </Text>
-          <Text color="gold" mb={3} fontSize="xl">
+          <Text color="white" mb={3} fontSize="xl">
             {categoryNames(event.categoryIds)}
           </Text>
 
-          <Text color="gold" fontSize="xl" fontWeight="bold">
+          <Text color="white" fontSize="xl" fontWeight="bold">
             {" "}
             Created by:
           </Text>
@@ -99,7 +117,7 @@ export const EventPage = () => {
               mr={2}
               mb={3}
             />
-            <Text color="gold" fontSize="xl" mb={3}>
+            <Text color="white" fontSize="xl" mb={3}>
               {user.name}
             </Text>
           </Flex>
@@ -111,16 +129,6 @@ export const EventPage = () => {
             setSelectEvent={setSelectedEvent}
           />
           <DeleteButton event={selectedEvent} />
-        </Box>
-
-        <Box>
-          <Image
-            src={selectedEvent.image}
-            alt="Image"
-            h="70vh"
-            w="45vw"
-            borderTopRadius="xl"
-          />
         </Box>
       </SimpleGrid>
     </Box>

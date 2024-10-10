@@ -93,8 +93,8 @@ export const EventsPage = () => {
     <eventContext.Provider value={{ categories, events, handleCategoryChange }}>
       <Box>
         <Heading
-          color="gold"
-          size={["sg", "2xl"]}
+          color="white"
+          size={["lg", "xl", "2xl"]}
           mt={6}
           mb={4}
           textAlign="center"
@@ -104,18 +104,18 @@ export const EventsPage = () => {
         <Center>
           <Input
             type="text"
-            w={["90vw", "30vw"]}
+            w={["90vw", "60vw", "60vw", "30vw"]}
             onChange={handleChange}
             placeholder="Search events..."
             bg="gray.200"
           />
         </Center>
         <Flex
-          flexDirection={["column", "row"]}
+          flexDirection={["column", "column", "row"]}
           mt={10}
           mr={20}
           ml={[35, 0]}
-          justifyContent={["center", "right"]}
+          justifyContent={["center", "center", "right"]}
           align={["center"]}
         >
           <CategoryDisplay />
@@ -123,7 +123,7 @@ export const EventsPage = () => {
 
         <Flex
           mt={10}
-          justify={["center", "space-evenly"]}
+          justify={["center", "center", "center", "space-evenly"]}
           align={["center"]}
           flexWrap="wrap"
           flexDir={["column", "row"]}
@@ -138,8 +138,8 @@ export const EventsPage = () => {
               p={5}
               align="center"
               mb={8}
-              w={["85vw", "25vw"]}
-              h="75vh"
+              w={["85vw", "48vw", "48vw", "25vw"]}
+              h={["80vh", "85vh", "85vh", "75vh"]}
               bg="black"
             >
               {/* link to /event/:eventId */}

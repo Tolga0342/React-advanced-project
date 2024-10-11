@@ -18,12 +18,8 @@ import { eventContext } from "../components/categoryContext";
 
 // inladen van de data(s)
 export const loader = async () => {
-  const responseEvents = await fetch(
-    "https://my-json-server.typicode.com/Tolga0342/online-data-project/events"
-  );
-  const responseCategories = await fetch(
-    "https://my-json-server.typicode.com/Tolga0342/online-data-project/categories"
-  );
+  const responseEvents = await fetch("http://localhost:3000/events");
+  const responseCategories = await fetch("http://localhost:3000/categories");
   const events = await responseEvents.json();
   const categories = await responseCategories.json();
   return { events, categories };

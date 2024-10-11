@@ -18,8 +18,12 @@ import { eventContext } from "../components/categoryContext";
 
 // inladen van de data(s)
 export const loader = async () => {
-  const responseEvents = await fetch("http://localhost:3000/events");
-  const responseCategories = await fetch("http://localhost:3000/categories");
+  const responseEvents = await fetch(
+    "https://my-json-server.typicode.com/Tolga0342/online-data-project/events"
+  );
+  const responseCategories = await fetch(
+    "https://my-json-server.typicode.com/Tolga0342/online-data-project/categories"
+  );
   const events = await responseEvents.json();
   const categories = await responseCategories.json();
   return { events, categories };
@@ -139,7 +143,7 @@ export const EventsPage = () => {
               align="center"
               mb={8}
               w={["85vw", "48vw", "48vw", "25vw"]}
-              h={["80vh", "85vh", "85vh", "75vh"]}
+              h={["80vh", "85vh", "80vh", "75vh"]}
               bg="black"
             >
               {/* link to /event/:eventId */}

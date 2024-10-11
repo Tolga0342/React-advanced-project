@@ -42,11 +42,14 @@ export const EditEvent = ({ event, users, categories }) => {
 
   const EditEvent = async (item) => {
     console.log("event1:", item);
-    const response = await fetch(`http://localhost:3000/events/${event.id}`, {
-      method: "PUT",
-      body: JSON.stringify(item),
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await fetch(
+      `https://my-json-server.typicode.com/Tolga0342/online-data-project/events/${event.id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(item),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
     if (response.ok) {
       toast({
         title: "Current event edited.",

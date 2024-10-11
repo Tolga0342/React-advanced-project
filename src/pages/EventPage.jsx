@@ -7,9 +7,15 @@ import { DeleteButton } from "../components/DeleteEvent";
 
 // data ingeladen
 export const loader = async ({ params }) => {
-  const event = await fetch(`http://localhost:3000/events/${params.eventId}`);
-  const categories = await fetch(`http://localhost:3000/categories`);
-  const users = await fetch(`http://localhost:3000/users`);
+  const event = await fetch(
+    `hhttps://my-json-server.typicode.com/Tolga0342/online-data-project/events/${params.eventId}`
+  );
+  const categories = await fetch(
+    `https://my-json-server.typicode.com/Tolga0342/online-data-project/categories`
+  );
+  const users = await fetch(
+    `https://my-json-server.typicode.com/Tolga0342/online-data-project/users`
+  );
   return {
     event: await event.json(),
     categories: await categories.json(),

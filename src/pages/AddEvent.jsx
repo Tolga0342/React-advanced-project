@@ -24,8 +24,12 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 
 // Load user and category data
 export const loader = async () => {
-  const responseUsers = await fetch("http://localhost:3000/users");
-  const responseCategories = await fetch("http://localhost:3000/categories");
+  const responseUsers = await fetch(
+    "https://my-json-server.typicode.com/Tolga0342/online-data-project/users"
+  );
+  const responseCategories = await fetch(
+    "https://my-json-server.typicode.com/Tolga0342/online-data-project/categories"
+  );
   const users = await responseUsers.json();
   const categories = await responseCategories.json();
   return { users, categories };
@@ -115,11 +119,14 @@ export const AddEvent = () => {
       endTime,
     };
 
-    const response = await fetch("http://localhost:3000/events", {
-      method: "POST",
-      body: JSON.stringify(newEvent),
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await fetch(
+      "https://my-json-server.typicode.com/Tolga0342/online-data-project/events",
+      {
+        method: "POST",
+        body: JSON.stringify(newEvent),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
     if (response.ok) {
       const addingEvent = await response.json();

@@ -22,9 +22,12 @@ export const DeleteButton = (event) => {
   //console.log("id:", id);
 
   const handleDelete = async () => {
-    const response = await fetch(`http://localhost:3000/events/${id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `https://my-json-server.typicode.com/Tolga0342/online-data-project/events/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     if (response.ok) {
       toast({
